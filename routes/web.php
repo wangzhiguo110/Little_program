@@ -17,10 +17,15 @@ Route::get('/', function () {
 
 Route::get('add','UserController@index');
 
-// 测试一个路由组
+//学习类的路由组
 Route::prefix('study')->group(function(){
-	Route::get('get/bonus','Study\BonusController@getBonus');
-
+    //红包首页路由
+    Route::get('bonus/index','Study\BonusController@index');
+    //红包添加路由
+    Route::post('bonus/add','Study\BonusController@addBonus');
+    //红包列表
+    Route::get('bonus/list','Study\BonusController@getList');
+    Route::get('bonus/record/list','Study\BonusController@getBonusRecord');
+    Route::any('get/bonus', 'Study\BonusController@getBonus'); //获取红包的路由
 });
-
 
