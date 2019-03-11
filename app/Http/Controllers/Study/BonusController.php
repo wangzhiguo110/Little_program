@@ -7,39 +7,37 @@ use App\Study\BsBonusRecord;
 use Log;
 class BonusController extends Controller
 {
-     public function index(){
-			return view('study.index');
-     }
-
-	public  function  addBonus(Request $request){
-		$params=$request->all();//获取所有参数
-//		dd($params);
-		$return=[
-			'code'=>2000,
-			'msg'=>"成功"
+	//
+	//首页
+	public function index()
+	{
+		return view('study.index');
+	}
+	//添加红包
+	public function addBonus(Request $request)
+	{
+		$params = $request->all();//获取所有的参数
+		$return = [
+			'code' => 2000,
+			'msg'  => "成功"
 		];
 		try{
-			$data=[
-				'total_amount'=>$params['total_amount'],
-				'left_amount'=>$params['total_amount'],
-				'total_nums'=>$params['total_nums'],
-				'left_nums'=>$params['total_nums'],
-
+			$data = [
+				'total_amount' => $params['total_amount'],
+				'left_amount' => $params['total_amount'],
+				'total_nums'  => $params['total_nums'],
+				'left_nums'  => $params['total_nums'],
 			];
-
-//			dd($data);
 			BsBonus::addBonus($data);
 		}catch(\Exception $e){
-			$return=[
-				'code'=>$e->getCode(),
-				'msg'=>$e->getMessage()
+			$return = [
+				'code' => $e->getCode(),
+				'msg'  => $e->getMessage()
 			];
 			return json_encode($return);
 		}
+
 		return json_encode($return);
-
-
-
 	}
 
 	//获取红包列表
@@ -65,7 +63,13 @@ class BonusController extends Controller
 		];
 		return json_encode($return);
 	}
-
+	/**
+	 * @抢红包的业务逻辑
+	 * 1、判断红包id和user_id是否传递
+	 * 2、判断一下红包是否存在
+	 * 3、判断红包是否已经抢完
+	 * 4、是否是最后一个人抢红包
+	 */
 	public function getBonus(Request $request)
 	{
 		//获取所有的参数
